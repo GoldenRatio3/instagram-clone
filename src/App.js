@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Post from './Post';
+import { db } from './firebase';
 
 function App() {
-	const [posts, setPosts] = useState([
-		{
-			username: 'Brad',
-			caption: 'Welcome!',
-			imageUrl:
-				'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
-		},
-		{
-			username: 'Captain Tom',
-			caption: "A'hoy sirs",
-			imageUrl:
-				'https://cdn.bannerbuzz.co.uk/media/catalog/product/resize/560/b/o/boat-lettering.jpg',
-		},
-		{
-			username: 'Test User',
-			caption: "Hi All! I'm a test user",
-			imageUrl: 'http://s3.amazonaws.com/37assets/svn/765-default-avatar.png',
-		},
-	]);
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		// Grab posts from firebase
+		db.collection('posts').onSnapshot((snapshot) => {
+			// Everytime a new post is added, fire this code
+			setPosts(
+				snapshot.docs.map((doc) => ({
+					id: doc.id,
+					post: doc.data(),
+				}))
+			);
+		});
+	}, []);
 
 	return (
 		<div className="app">
@@ -32,8 +28,9 @@ function App() {
 					alt=""
 				/>
 			</div>
-			{posts.map((post) => (
+			{posts.map(({ id, post }) => (
 				<Post
+					key={id}
 					username={post.username}
 					caption={post.caption}
 					imageUrl={post.imageUrl}
