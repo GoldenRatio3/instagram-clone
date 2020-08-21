@@ -178,6 +178,7 @@ function App() {
 					</div>
 				)}
 			</div>
+
 			<div className="app__posts">
 				{posts.map(({ id, post }) => (
 					<Post
