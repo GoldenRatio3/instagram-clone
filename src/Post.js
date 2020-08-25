@@ -11,7 +11,6 @@ function Post({ username, caption, imageUrl }) {
 				<Avatar className="post__avatar" alt="Bradley" />
 				<h3>{username}</h3>
 			</div>
-
 			<img className="post__image" src={imageUrl} alt="" />
 			<p className="post__text">
 				<strong>{username}</strong> {caption}
